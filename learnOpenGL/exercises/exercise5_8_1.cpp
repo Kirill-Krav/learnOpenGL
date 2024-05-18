@@ -28,15 +28,12 @@ const float vertices[] = {
      0.5f,  0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
     -0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f
+    -0.5f,  0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
 };
 
-unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
-};
-
-void framebufferSizeCallback(GLFWwindow *window, int w, int h) {
+void framebufferSizeCallback(GLFWwindow* window, int w, int h) {
     glViewport(0, 0, w, h);
 }
 
@@ -85,7 +82,7 @@ int main(void)
     glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, onKeyDown);
-    
+
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -96,11 +93,6 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -108,7 +100,7 @@ int main(void)
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
-    
+
     int success;
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
@@ -147,19 +139,19 @@ int main(void)
         glfwTerminate();
         return -1;
     }
-    
+
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
-        
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
