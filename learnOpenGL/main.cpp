@@ -9,9 +9,17 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Camera.h"
+
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
 
 const int width = 800;
 const int height = 600;
+
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastMouseX = width / 2, lastMouseY = height / 2;
+bool firstMouse = true;
 
 float vertices[] = {
     //coords                      texture
@@ -71,15 +79,11 @@ glm::vec3 cubePositions[] = {
     glm::vec3(-1.3f, 1.0f, -1.5f)
 };
 
-
 void framebufferSizeCallback(GLFWwindow *window, int w, int h) {
     glViewport(0, 0, w, h);
 }
 
-bool wireframeMode = false;
-
 float mixValue = 0.2f;
-
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
@@ -92,8 +96,39 @@ void processInput(GLFWwindow* window) {
         mixValue -= 0.01f;
         mixValue = std::max(0.0f, mixValue);
     }
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.processKeyBoard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.processKeyBoard(BACKWORD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.processKeyBoard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.processKeyBoard(RIGHT, deltaTime);
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    if (firstMouse)
+    {
+        lastMouseX = xpos;
+        lastMouseY = ypos;
+        firstMouse = false;
+    }
+    
+    float xoffset = xpos - lastMouseX;
+    float yoffset = lastMouseY - ypos; 
+    lastMouseX = xpos;
+    lastMouseY = ypos;
+    
+    camera.processMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera.processMouseScroll(yoffset);
+}
+
+bool wireframeMode = false;
 void onKeyDown(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS && key == GLFW_KEY_SPACE) {
         if (!wireframeMode) {
@@ -132,6 +167,10 @@ int main(void)
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, onKeyDown);
     
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
     glEnable(GL_DEPTH_TEST);
     
 
@@ -206,10 +245,14 @@ int main(void)
     ourShader.setInt("texture2", 1);
 
     
-
     
 
     while (!glfwWindowShouldClose(window)) {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        
         processInput(window);
         
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -224,12 +267,12 @@ int main(void)
         ourShader.use();
 
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = camera.getViewMatrix();
         int viewLocation = glGetUniformLocation(ourShader.getID(), "view");
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
 
         glm::mat4 projection;
-        projection = glm::perspective(acosf(-1) / 3.0f, 1.0f * width / height, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(camera.getZoom()), 1.0f * width / height, 0.1f, 100.0f);
         int projectionLocation = glGetUniformLocation(ourShader.getID(), "projection");
         glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -239,9 +282,7 @@ int main(void)
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             float angle = acosf(-1) / 9.0f * (i + 1);
-            if (i % 3 == 0) {
-                model = glm::rotate(model, (float)glfwGetTime() * angle, glm::vec3(1.0f, 0.3f, 0.5f));
-            }
+            model = glm::rotate(model, (float)glfwGetTime() * angle, glm::vec3(1.0f, 0.3f, 0.5f));
             
             int modelLocation = glGetUniformLocation(ourShader.getID(), "model");
             glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
