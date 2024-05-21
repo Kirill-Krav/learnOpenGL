@@ -202,16 +202,16 @@ int main(void)
         glm::vec3 ambientColor = diffuseColor * 0.2f;
 
         basicShader.use();
-        basicShader.setVec3("light.ambient", 1.0f, 1.0f, 1.0f);
-        basicShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+        basicShader.setVec3("light.ambient", ambientColor);
+        basicShader.setVec3("light.diffuse", diffuseColor);
         basicShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
         basicShader.setVec3("light.position", lightPos);
 
         basicShader.setVec3("viewPos", camera.getPosition());
 
-        basicShader.setVec3("material.ambient", 0.0f, 0.1f, 0.06f);
-        basicShader.setVec3("material.diffuse", 0.0f, 0.50980392f, 0.50980392f);
-        basicShader.setVec3("material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
+        basicShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        basicShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        basicShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
         basicShader.setFloat("material.shininess", 32.0f);
 
         glm::mat4 view = camera.getViewMatrix();
@@ -232,7 +232,7 @@ int main(void)
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("model", model);
 
-        lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightShader.setVec3("lightColor", lightColor);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
