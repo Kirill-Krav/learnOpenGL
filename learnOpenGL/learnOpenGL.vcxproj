@@ -144,6 +144,7 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="lightShader.frag" />
     <Text Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>
