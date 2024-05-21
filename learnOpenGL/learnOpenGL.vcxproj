@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="lightShader.frag" />
+    <Text Include="lightShader.vert" />
     <Text Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>

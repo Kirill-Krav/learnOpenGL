@@ -207,7 +207,7 @@ int main(void)
         basicShader.setMat4("view", view);
         basicShader.setMat4("projection", projection);
         basicShader.setMat4("model", model);
-        basicShader.setMat4("inverseModel", glm::inverse(model));
+        basicShader.setMat4("inverseModel", glm::inverse(view * model));
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);

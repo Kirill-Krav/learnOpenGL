@@ -58,6 +58,11 @@ void Camera::processMouseScroll(float yoffset)
 		zoom = 90.0f;
 }
 
+glm::vec3 Camera::getPosition()
+{
+	return position;
+}
+
 float Camera::getZoom()
 {
 	return zoom;
