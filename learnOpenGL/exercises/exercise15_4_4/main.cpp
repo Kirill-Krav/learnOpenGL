@@ -173,8 +173,7 @@ int main(void)
 
     stbi_image_free(data);
 
-
-    data = stbi_load("images/container2_specular.png", &imgWidth, &imgHeight, &nrChannels, 0);
+    data = stbi_load("images/lighting_maps_specular_color.png", &imgWidth, &imgHeight, &nrChannels, 0);
     if (!data) {
         std::cerr << "Failed to load texture" << std::endl;
         return -1;
@@ -194,6 +193,25 @@ int main(void)
 
     stbi_image_free(data);
 
+    data = stbi_load("images/matrix.jpg", &imgWidth, &imgHeight, &nrChannels, 0);
+    if (!data) {
+        std::cerr << "Failed to load texture" << std::endl;
+        return -1;
+    }
+
+    unsigned int emission;
+    glGenTextures(1, &emission);
+    glBindTexture(GL_TEXTURE_2D, emission);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    stbi_image_free(data);
 
 
     unsigned int VAO;
@@ -230,6 +248,7 @@ int main(void)
  
     basicShader.setInt("material.diffuse", 0);
     basicShader.setInt("material.specular", 1);
+    basicShader.setInt("material.emission", 2);
 
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
@@ -254,6 +273,8 @@ int main(void)
         glBindTexture(GL_TEXTURE_2D, texture); 
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, emission);
 
         basicShader.use();
         basicShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);

@@ -174,7 +174,7 @@ int main(void)
     stbi_image_free(data);
 
 
-    data = stbi_load("images/container2_specular.png", &imgWidth, &imgHeight, &nrChannels, 0);
+    data = stbi_load("images/lighting_maps_specular_color.png", &imgWidth, &imgHeight, &nrChannels, 0);
     if (!data) {
         std::cerr << "Failed to load texture" << std::endl;
         return -1;
