@@ -31,6 +31,8 @@ public:
 
 	glm::vec3 getPosition();
 
+	glm::vec3 getFront();
+
 	float getZoom();
 private:
 	void updateCameraVectors();
