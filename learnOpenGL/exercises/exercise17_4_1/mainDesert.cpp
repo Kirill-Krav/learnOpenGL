@@ -88,10 +88,10 @@ glm::vec3 pointLightPositions[] = {
 };
 
 glm::vec3 pointLightColors[] = {
-    glm::vec3(0.4f, 0.7f, 0.1f),
-    glm::vec3(0.4f, 0.7f, 0.1f),
-    glm::vec3(0.4f, 0.7f, 0.1f),
-    glm::vec3(0.4f, 0.7f, 0.1f)
+    glm::vec3(1.0f, 0.6f, 0.0f),
+    glm::vec3(1.0f, 0.0f, 0.0f),
+    glm::vec3(1.0f, 1.0, 0.0),
+    glm::vec3(0.2f, 0.2f, 1.0f)
 };
 
 
@@ -260,7 +260,7 @@ int main(void)
 
         processInput(window);
 
-        glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
+        glClearColor(0.75f, 0.52f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
@@ -270,9 +270,9 @@ int main(void)
 
         basicShader.use();
         //dirLight
-        basicShader.setVec3("dirLight.ambient", 0.5f, 0.5f, 0.5f);
-        basicShader.setVec3("dirLight.diffuse", 1.0f, 1.0f, 1.0f);
-        basicShader.setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f);
+        basicShader.setVec3("dirLight.ambient", 0.3f, 0.24f, 0.14f);
+        basicShader.setVec3("dirLight.diffuse", 0.7f, 0.42f, 0.26f);
+        basicShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
         basicShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
 
         //pointLights
@@ -282,21 +282,21 @@ int main(void)
             basicShader.setVec3("pointLights[" + std::to_string(i) + "].specular", pointLightColors[i]);
             basicShader.setVec3("pointLights[" + std::to_string(i) + "].position", pointLightPositions[i]);
             basicShader.setFloat("pointLights[" + std::to_string(i) + "].constant", 1.0f);
-            basicShader.setFloat("pointLights[" + std::to_string(i) + "].linear", 0.07);
-            basicShader.setFloat("pointLights[" + std::to_string(i) + "].quadratic", 0.017);
+            basicShader.setFloat("pointLights[" + std::to_string(i) + "].linear", 0.09f);
+            basicShader.setFloat("pointLights[" + std::to_string(i) + "].quadratic", 0.032f);
         }
 
         //spotLight
         basicShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-        basicShader.setVec3("spotLight.diffuse", 0.0f, 1.0f, 0.0f);
-        basicShader.setVec3("spotLight.specular", 0.0f, 1.0f, 0.0f);
+        basicShader.setVec3("spotLight.diffuse", 0.8f, 0.8f, 0.0f);
+        basicShader.setVec3("spotLight.specular", 0.8f, 0.8f, 0.0f);
         basicShader.setVec3("spotLight.position", camera.getPosition());
         basicShader.setVec3("spotLight.direction", camera.getFront());
-        basicShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(7.0f)));
-        basicShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(10.0f)));
+        basicShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+        basicShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(13.0f)));
         basicShader.setFloat("spotLight.constant", 1.0f);
-        basicShader.setFloat("spotLight.linear", 0.07);
-        basicShader.setFloat("spotLight.quadratic", 0.017);
+        basicShader.setFloat("spotLight.linear", 0.09f);
+        basicShader.setFloat("spotLight.quadratic", 0.032f);
 
         basicShader.setVec3("viewPos", camera.getPosition());
 
