@@ -30,6 +30,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -44,11 +47,16 @@
     <ClInclude Include="Mesh.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="shader.vert" />
     <Text Include="lightShader.frag" />
     <Text Include="lightShader.vert" />
+    <Text Include="backpack.vert" />
+    <Text Include="backpack.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />

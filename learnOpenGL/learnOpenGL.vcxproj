@@ -137,11 +137,13 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -149,6 +151,8 @@
     <Text Include="lightShader.frag" />
     <Text Include="lightShader.vert" />
     <Text Include="shader.vert" />
+    <Text Include="backpack.vert" />
+    <Text Include="backpack.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
