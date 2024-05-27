@@ -153,6 +153,9 @@
     <Text Include="shader.vert" />
     <Text Include="backpack.vert" />
     <Text Include="backpack.frag" />
+    <Text Include="shader2.vert" />
+    <Text Include="shader2.frag" />
+    <Text Include="shaderSingleColor.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
