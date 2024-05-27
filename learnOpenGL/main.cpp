@@ -16,57 +16,57 @@
 
 float cubeVertices[] = {
     // positions          // texture Coords
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 
 
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 
     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 
 
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  
 };
 float planeVertices[] = {
     // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
      5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-    -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
     -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+    -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
 
      5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-    -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
-     5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+     5.0f, -0.5f, -5.0f,  2.0f, 2.0f,
+    -5.0f, -0.5f, -5.0f,  0.0f, 2.0f
 };
 float transparentVertices[] = {
     // positions         // texture Coords (swapped y coordinates because texture is flipped upside down)
@@ -211,6 +211,7 @@ int main(void)
     glEnable(GL_DEPTH_TEST);    
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
 
     Shader shader("shader2.vert", "shader2.frag");
 
@@ -310,7 +311,7 @@ int main(void)
             float distance = glm::length(camera.getPosition() - vegetation[i]);
             sorted[distance] = vegetation[i];
         }
-
+        glDisable(GL_CULL_FACE);
         for (auto c : sorted)
         {
             model = glm::mat4(1.0f);
@@ -318,6 +319,7 @@ int main(void)
             shader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
+        glEnable(GL_CULL_FACE);
 
 
         glfwSwapBuffers(window);
