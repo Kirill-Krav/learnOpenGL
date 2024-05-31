@@ -73,6 +73,16 @@ float Camera::getZoom()
 	return zoom;
 }
 
+void Camera::setYaw(float y)
+{
+	yaw = y;
+}
+
+float Camera::getYaw()
+{
+	return yaw;
+}
+
 void Camera::updateCameraVectors()
 {
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));

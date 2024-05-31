@@ -78,6 +78,16 @@ float transparentVertices[] = {
     1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
     1.0f,  0.5f,  0.0f,  1.0f,  0.0f
 };
+float quadVertices[] = {
+    // positions    // texCoords
+    -1.0f,  1.0f,   0.0f, 1.0f,
+    -1.0f, -1.0f,   0.0f, 0.0f,
+     1.0f, -1.0f,   1.0f, 0.0f,
+    -1.0f,  1.0f,   0.0f, 1.0f,
+     1.0f, -1.0f,   1.0f, 0.0f,
+     1.0f,  1.0f,   1.0f, 1.0f
+};
+
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
@@ -209,11 +219,9 @@ int main(void)
     glfwSetScrollCallback(window, scroll_callback);
 
     glEnable(GL_DEPTH_TEST);    
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_CULL_FACE);
 
     Shader shader("shader2.vert", "shader2.frag");
+    Shader screenShader("screenShader.vert", "screenShader.frag");
 
     unsigned int cubeVAO, cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
@@ -237,34 +245,50 @@ int main(void)
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    
-
-    std::vector<glm::vec3> vegetation;
-    vegetation.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
-    vegetation.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
-    vegetation.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
-    vegetation.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
-    vegetation.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
-
-    unsigned int grassVAO, grassVBO;
-    glGenVertexArrays(1, &grassVAO);
-    glGenBuffers(1, &grassVBO);
-    glBindVertexArray(grassVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), &transparentVertices, GL_STATIC_DRAW);
+    unsigned int quadVAO, quadVBO;
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
     unsigned int cubeTexture = loadTexture("resources/textures/marble.jpg", GL_REPEAT);
     unsigned int floorTexture = loadTexture("resources/textures/metal.png", GL_REPEAT);
-    unsigned int grassTexture = loadTexture("resources/textures/blending_transparent_window.png", GL_CLAMP_TO_EDGE);
 
     shader.use();
     shader.setInt("texture1", 0);
 
-    
+    screenShader.use();
+    screenShader.setInt("screenTexture", 0);
+
+    unsigned int framebuffer;
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+    unsigned int texColorBuffer;
+    glGenTextures(1, &texColorBuffer);
+    glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+
+    unsigned int rbo;
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
@@ -273,26 +297,21 @@ int main(void)
 
         processInput(window);
 
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_DEPTH_TEST);
         
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.getViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.getZoom()), 1.0f * width / height, 0.1f, 100.0f);
-        
 
         shader.use();
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
         
-        glBindVertexArray(planeVAO);
-        glBindTexture(GL_TEXTURE_2D, floorTexture);
-        shader.setMat4("model", glm::mat4(1.0f));
-        glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(cubeVAO);
-        
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
         model = glm::translate(model, glm::vec3(-1.0, 0.0f, -1.0f));
         shader.setMat4("model", model);
@@ -302,25 +321,20 @@ int main(void)
         shader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        glBindVertexArray(grassVAO);
-        glBindTexture(GL_TEXTURE_2D, grassTexture);
+        glBindVertexArray(planeVAO);
+        glBindTexture(GL_TEXTURE_2D, floorTexture);
+        shader.setMat4("model", glm::mat4(1.0f));
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        std::map<float, glm::vec3, std::greater<float>> sorted;
-        for (unsigned int i = 0; i < vegetation.size(); i++)
-        {
-            float distance = glm::length(camera.getPosition() - vegetation[i]);
-            sorted[distance] = vegetation[i];
-        }
-        glDisable(GL_CULL_FACE);
-        for (auto c : sorted)
-        {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, c.second);
-            shader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
-        glEnable(GL_CULL_FACE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
+        screenShader.use();
+        glBindVertexArray(quadVAO);
+        glDisable(GL_DEPTH_TEST);
+        glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

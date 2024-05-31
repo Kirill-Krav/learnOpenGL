@@ -34,6 +34,10 @@ public:
 	glm::vec3 getFront();
 
 	float getZoom();
+
+	void setYaw(float y);
+
+	float getYaw();
 private:
 	void updateCameraVectors();
 
