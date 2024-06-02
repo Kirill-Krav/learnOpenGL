@@ -158,6 +158,8 @@
     <Text Include="shaderSingleColor.frag" />
     <Text Include="screenShader.vert" />
     <Text Include="screenShader.frag" />
+    <Text Include="shaderSkyBox.vert" />
+    <Text Include="shaderSkyBox.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
